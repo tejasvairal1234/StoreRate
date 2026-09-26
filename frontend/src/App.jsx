@@ -1,4 +1,5 @@
 import React from "react";
+import api from "./services/api.js";
 
 function App() {
   return (
@@ -7,7 +8,7 @@ function App() {
         Store Rating Application
       </h1>
       <p style={{ fontSize: "18px", color: "#4b5563", marginBottom: "24px" }}>
-        React + Vite Frontend initialized successfully!
+        Frontend configured & ready!
       </p>
       <div
         style={{
@@ -19,18 +20,18 @@ function App() {
           boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
           color: "#374151",
           textAlign: "left",
-          maxWidth: "480px",
+          maxWidth: "500px",
           width: "100%",
         }}
       >
         <h3 style={{ margin: "0 0 12px 0", color: "#111827", fontSize: "18px" }}>
-          Phase 2 Complete: React + Vite Setup
+          Phase 3 Complete: Axios & Environment Config
         </h3>
         <ul style={{ margin: 0, paddingLeft: "20px", lineHeight: "1.8", color: "#4b5563" }}>
-          <li>React 19 + Vite initialized</li>
-          <li>React Router DOM installed</li>
-          <li>Axios installed for API calls</li>
-          <li>Development and production build verified</li>
+          <li>Axios instance created in <code>src/services/api.js</code></li>
+          <li>Base URL configured: <code>{api.defaults.baseURL}</code></li>
+          <li>JWT Request Interceptor configured</li>
+          <li>Environment variables set via <code>.env.example</code></li>
         </ul>
       </div>
     </div>
