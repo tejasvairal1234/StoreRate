@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./pages/Login.jsx";
+import Register from "./pages/Register.jsx";
 
 function App() {
   return (
@@ -40,14 +41,7 @@ function App() {
             </div>
           }
         />
-        <Route
-          path="/register"
-          element={
-            <div style={{ padding: "40px 20px", textAlign: "center" }}>
-              <h2>Registration Page (Coming in Phase 6)</h2>
-            </div>
-          }
-        />
+        <Route path="/register" element={<Register />} />
 
         {/* Fallback for any other path */}
         <Route path="*" element={<Navigate to="/login" replace />} />
