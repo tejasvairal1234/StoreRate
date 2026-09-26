@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import cors from "cors";
 import connectDB from "./src/config/db.js";
 import authRouter from "./src/routes/authRoute.js";
+import userRouter from "./src/routes/userRoutes.js";
 
 dotenv.config();
 
@@ -15,6 +16,7 @@ app.use(express.json());
 connectDB();
 
 app.use("/api/auth", authRouter);
+app.use("/api/users", userRouter);
 app.use((req, res) => {
   res.status(404).json({
     success: false,
