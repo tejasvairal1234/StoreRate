@@ -17,6 +17,7 @@ connectDB();
 
 app.use("/api/auth", authRouter);
 app.use("/api/users", userRouter);
+app.use("/api/stores", storeRoutes);
 app.use((req, res) => {
   res.status(404).json({
     success: false,
