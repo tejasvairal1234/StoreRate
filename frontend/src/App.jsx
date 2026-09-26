@@ -2,48 +2,73 @@ import React from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./pages/Login.jsx";
 import Register from "./pages/Register.jsx";
+import Unauthorized from "./pages/Unauthorized.jsx";
+import ProtectedRoute from "./components/ProtectedRoute.jsx";
+import RoleRoute from "./components/RoleRoute.jsx";
+
+// Temporary placeholder components for role routes until their dedicated phases
+function UserDashboardPlaceholder() {
+  return (
+    <div style={{ padding: "40px 20px", textAlign: "center", fontFamily: "system-ui, sans-serif" }}>
+      <h2 style={{ color: "#2563eb", marginBottom: "8px" }}>User Dashboard</h2>
+      <p style={{ color: "#4b5563" }}>
+        Temporary placeholder for Phase 9. Access granted for role: <strong>user</strong>.
+      </p>
+    </div>
+  );
+}
+
+function AdminDashboardPlaceholder() {
+  return (
+    <div style={{ padding: "40px 20px", textAlign: "center", fontFamily: "system-ui, sans-serif" }}>
+      <h2 style={{ color: "#2563eb", marginBottom: "8px" }}>Admin Dashboard</h2>
+      <p style={{ color: "#4b5563" }}>
+        Temporary placeholder for Phase 13. Access granted for role: <strong>admin</strong>.
+      </p>
+    </div>
+  );
+}
+
+function OwnerDashboardPlaceholder() {
+  return (
+    <div style={{ padding: "40px 20px", textAlign: "center", fontFamily: "system-ui, sans-serif" }}>
+      <h2 style={{ color: "#2563eb", marginBottom: "8px" }}>Store Owner Dashboard</h2>
+      <p style={{ color: "#4b5563" }}>
+        Temporary placeholder for Phase 19. Access granted for role: <strong>owner</strong>.
+      </p>
+    </div>
+  );
+}
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Default route redirects to /login */}
+        {/* Public Routes */}
         <Route path="/" element={<Navigate to="/login" replace />} />
-
-        {/* Login Page */}
         <Route path="/login" element={<Login />} />
-
-        {/* Temporary placeholder targets for role-based redirects */}
-        <Route
-          path="/user/dashboard"
-          element={
-            <div style={{ padding: "40px 20px", textAlign: "center" }}>
-              <h2>User Dashboard (Coming in Phase 9)</h2>
-              <p>You have successfully logged in as a normal user!</p>
-            </div>
-          }
-        />
-        <Route
-          path="/admin/dashboard"
-          element={
-            <div style={{ padding: "40px 20px", textAlign: "center" }}>
-              <h2>Admin Dashboard (Coming in Phase 13)</h2>
-              <p>You have successfully logged in as an administrator!</p>
-            </div>
-          }
-        />
-        <Route
-          path="/owner/dashboard"
-          element={
-            <div style={{ padding: "40px 20px", textAlign: "center" }}>
-              <h2>Store Owner Dashboard (Coming in Phase 19)</h2>
-              <p>You have successfully logged in as a store owner!</p>
-            </div>
-          }
-        />
         <Route path="/register" element={<Register />} />
+        <Route path="/unauthorized" element={<Unauthorized />} />
 
-        {/* Fallback for any other path */}
+        {/* Authenticated Routes */}
+        <Route element={<ProtectedRoute />}>
+          {/* Normal User Routes (Role: user) */}
+          <Route element={<RoleRoute allowedRoles={["user"]} />}>
+            <Route path="/user/dashboard" element={<UserDashboardPlaceholder />} />
+          </Route>
+
+          {/* Admin Routes (Role: admin) */}
+          <Route element={<RoleRoute allowedRoles={["admin"]} />}>
+            <Route path="/admin/dashboard" element={<AdminDashboardPlaceholder />} />
+          </Route>
+
+          {/* Store Owner Routes (Role: owner) */}
+          <Route element={<RoleRoute allowedRoles={["owner"]} />}>
+            <Route path="/owner/dashboard" element={<OwnerDashboardPlaceholder />} />
+          </Route>
+        </Route>
+
+        {/* Catch-all Fallback */}
         <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
     </BrowserRouter>
