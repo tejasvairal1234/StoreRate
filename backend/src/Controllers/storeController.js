@@ -1,5 +1,5 @@
 import Store from "../models/Store.js";
-import Rating from '../models/Rating.js'
+import Rating from "../models/Rating.js";
 
 export const getStores = async (req, res) => {
   try {
@@ -22,8 +22,9 @@ export const getStores = async (req, res) => {
     }
 
     const sort = {};
-
-    sort[sortBy] = order === "desc" ? -1 : 1;
+    if (sortBy !== "rating" && sortBy !== "averageRating") {
+      sort[sortBy] = order === "desc" ? -1 : 1;
+    }
 
     const stores = await Store.find(filter)
       .populate("owner", "name email")
@@ -47,13 +48,37 @@ export const getStores = async (req, res) => {
         averageRating = total / ratings.length;
       }
 
+      // Find current user's submitted rating if authenticated
+      let myRating = null;
+      if (req.user && req.user.id) {
+        const userRatingDoc = await Rating.findOne({
+          store: store._id,
+          user: req.user.id,
+        });
+        if (userRatingDoc) {
+          myRating = userRatingDoc.rating;
+        }
+      }
+
       result.push({
         id: store._id,
+        _id: store._id,
         name: store.name,
         email: store.email,
         address: store.address,
         owner: store.owner,
         averageRating: Number(averageRating.toFixed(2)),
+        totalRatings: ratings.length,
+        myRating,
+      });
+    }
+
+    // Sort by rating in memory if requested
+    if (sortBy === "rating" || sortBy === "averageRating") {
+      result.sort((a, b) => {
+        return order === "desc"
+          ? b.averageRating - a.averageRating
+          : a.averageRating - b.averageRating;
       });
     }
 
