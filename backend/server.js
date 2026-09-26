@@ -4,6 +4,7 @@ import cors from "cors";
 import connectDB from "./src/config/db.js";
 import authRouter from "./src/routes/authRoute.js";
 import userRouter from "./src/routes/userRoutes.js";
+import storeRouter from "./src/routes/storeRoutes.js";
 
 dotenv.config();
 
@@ -17,7 +18,7 @@ connectDB();
 
 app.use("/api/auth", authRouter);
 app.use("/api/users", userRouter);
-app.use("/api/stores", storeRoutes);
+app.use("/api/stores", storeRouter);
 app.use((req, res) => {
   res.status(404).json({
     success: false,
