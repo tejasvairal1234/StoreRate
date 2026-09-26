@@ -26,7 +26,28 @@ api.interceptors.request.use(
     return config;
   },
   (error) => {
-    // If request setup fails, forward the error
+    return Promise.reject(error);
+  }
+);
+
+// Response Interceptor:
+// Centralized handling of HTTP 401 (expired/invalid token) and HTTP 403 (forbidden role access)
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (typeof window !== "undefined" && error.response) {
+      const status = error.response.status;
+      const currentPath = window.location.pathname;
+
+      // If token expired/invalid on a protected route, clear storage and send to login
+      if (status === 401 && currentPath !== "/login" && currentPath !== "/register") {
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+        window.location.href = "/login";
+      } else if (status === 403 && currentPath !== "/unauthorized") {
+        window.location.href = "/unauthorized";
+      }
+    }
     return Promise.reject(error);
   }
 );
