@@ -16,7 +16,16 @@ const port = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
+// Connect to MongoDB database
 connectDB();
+
+// Root route - Basic health check endpoint to verify server is running
+app.get("/", (req, res) => {
+  res.json({
+    success: true,
+    message: "Store Rating API is running successfully",
+  });
+});
 
 app.use("/api/auth", authRouter);
 app.use("/api/users", userRouter);
