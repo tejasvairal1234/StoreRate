@@ -6,6 +6,7 @@ import authRouter from "./src/routes/authRoute.js";
 import userRouter from "./src/routes/userRoutes.js";
 import storeRouter from "./src/routes/storeRoutes.js";
 import ratingRouter from "./src/routes/ratingRoutes.js";
+import adminRouter from "./src/routes/adminRoutes.js";
 
 dotenv.config();
 
@@ -21,6 +22,7 @@ app.use("/api/auth", authRouter);
 app.use("/api/users", userRouter);
 app.use("/api/stores", storeRouter);
 app.use("/api/ratings", ratingRouter);
+app.use("/api/admin", adminRouter);
 app.use((req, res) => {
   res.status(404).json({
     success: false,
